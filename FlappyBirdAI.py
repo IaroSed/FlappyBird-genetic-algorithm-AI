@@ -11,7 +11,6 @@ Created on Sun Feb 10 19:15:56 2019
 import keras
 from keras.models import Sequential
 from keras.layers import Dense
-#from keras.utils.vis_utils import plot_model
 from keras import backend as K
 
 
@@ -20,8 +19,7 @@ import random
 import pandas as pd
 import heapq
 import numpy as np
-#import os
-#os.environ["PATH"] += os.pathsep + 'C:/Program Files (x86)/Graphviz2.38/bin/'
+
 
 # Defining constants
 NUMBER_MODELS = 20
@@ -77,6 +75,9 @@ for i in range(0,10):
     # Compiling the ANN
     best_classifiers[i].compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy']) 
 
+
+
+Exit_RS = open("ResultsSelection.txt", 'w',encoding='utf-8')
 
 
 
@@ -168,7 +169,7 @@ def crossover(fitness):
     
 
     best_fitness_temp = [0] * 30
-    print("1: " + str(best_classifiers[0].get_weights()[0][0]))
+    #print("1: " + str(best_classifiers[0].get_weights()[0][0]))
 
     best_fitness_temp = best_fitness + fitness
 
@@ -182,6 +183,10 @@ def crossover(fitness):
     for i in range(0,10):
         best_classifiers[i].set_weights((best_classifiers+classifier)[best_parents_int[i][0]].get_weights())
         best_fitness[i] = best_fitness_temp[best_parents_int[i][0]]
+        Exit_RS.write(str(best_parents_int[i][0]) + "^")
+    Exit_RS.write(str(Generation) + "^" + str(best_fitness[0]))
+    Exit_RS.write("\n")
+
 
 
     #Replacing the first 5 classifiers by the best and no mutation 
@@ -205,7 +210,7 @@ def crossover(fitness):
     for i in range(15,20):
         classifier[i].set_weights([best_classifiers[i-15].get_weights()[0], best_classifiers[i-15].get_weights()[1], CPw[14-i] , best_classifiers[i-15].get_weights()[3]])  
         
-    print("6: " + str(best_classifiers[0].get_weights()[0][0]))
+    #print("6: " + str(best_classifiers[0].get_weights()[0][0]))
 
         
 def mutate():
@@ -355,14 +360,11 @@ while run:
         # To this should be in a separate method
     
     
-        #if keys[pygame.K_SPACE]:
         if flap[i]:
         
-            #print("Flapping...")
             b[i].flapswings()
         
         else:
-            #print("Sinking...")
             b[i].sinks()
         
         
@@ -373,13 +375,13 @@ while run:
         
         if ((b[i].x == p1.x + PIPES_WIDTH or b[i].x == p2.x + PIPES_WIDTH) and run == True):
             b[i].score +=1
-            #print(Score)
+
             
         #Testing if the bird is still alive
         alive.append(b[i].alive)
         fitness.append(b[i].fitness)
 
-    #print("Number alive: " + str(sum(alive)))    
+ 
     
     p1.move()
     p2.move()
@@ -391,7 +393,6 @@ while run:
         #Score
         score_info = myfont.render('Score: ' + str(b[[i for i, x in enumerate(alive) if x][0]].score) , False, (0, 0, 0))
         win.blit(score_info,(5, 5))
-        #plot_model(model, to_file='model_plot.png', show_shapes=True, show_layer_names=True)
     
             
     # If all the birds are dead        
@@ -406,7 +407,6 @@ while run:
         mutate()
         
         Generation += 1
-        #print("Showing new Generation " + str(Generation) + " Best fitness: " + str(best_fitness[0]))
         
         for i in range(0,NUMBER_MODELS):
             b[i].y = SCREEN_HEIGHT/2 + 4*i
