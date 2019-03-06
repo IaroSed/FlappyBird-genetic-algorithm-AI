@@ -223,6 +223,9 @@ def mutate():
         B = classifier[i].get_weights()[0][1]
         C = classifier[i].get_weights()[0][2]
         D = classifier[i].get_weights()[2]
+        
+        Z1 = classifier[i].get_weights()[1]
+        Z2 = classifier[i].get_weights()[3]
     
         #number_changes = 0
         
@@ -231,22 +234,22 @@ def mutate():
             if random.uniform(0,1) > PROBA:
                 change = random.uniform(-DELTA,DELTA)
                 A[j] += change
-                classifier[i].set_weights([np.array([list(A),list(B),list(C)]) , np.zeros(3, dtype=float), D , np.zeros(1, dtype=float)])
+                classifier[i].set_weights([np.array([list(A),list(B),list(C)]), Z1, D , Z2])
                 #number_changes += 1
             if random.uniform(0,1) > PROBA:
                 change = random.uniform(-DELTA,DELTA)
                 B[j] += change
-                classifier[i].set_weights([np.array([list(A),list(B),list(C)]) , np.zeros(3, dtype=float), D , np.zeros(1, dtype=float)])
+                classifier[i].set_weights([np.array([list(A),list(B),list(C)]), Z1, D , Z2])
                 #number_changes += 1
             if random.uniform(0,1) > PROBA:
                 change = random.uniform(-DELTA,DELTA)
                 C[j] += change
-                classifier[i].set_weights([np.array([list(A),list(B),list(C)]) , np.zeros(3, dtype=float), D , np.zeros(1, dtype=float)])
+                classifier[i].set_weights([np.array([list(A),list(B),list(C)]), Z1, D , Z2])
                 #number_changes += 1
             if random.uniform(0,1) > PROBA:
                 change = random.uniform(-DELTA,DELTA)
                 D[j][0] += change
-                classifier[i].set_weights([np.array([list(A),list(B),list(C)]) , np.zeros(3, dtype=float), D , np.zeros(1, dtype=float)])
+                classifier[i].set_weights([np.array([list(A),list(B),list(C)]), Z1, D , Z2])
                 #number_changes += 1
     print("7: " + str(best_classifiers[0].get_weights()[0][0]))
  
@@ -432,7 +435,8 @@ while run:
     
     
     
-    pygame.display.update()
+    #pygame.display.update()
+    pygame.display.flip()
     
 
 pygame.quit()
